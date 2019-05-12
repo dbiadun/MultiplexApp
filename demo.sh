@@ -1,0 +1,11 @@
+printf "\e[33mSend the date and the time of the movie\n\e[0m"
+printf "\e[33mRequest:\e[0m http://localhost:8080/screenings/?startTime=2019-05-25T10:00&endTime=2019-05-25T19:00\n"
+printf "\e[33mResponse:\e[0m "
+curl "http://localhost:8080/screenings/?startTime=2019-05-25T10:00&endTime=2019-05-25T19:00"
+printf "\n\n"
+
+printf "\e[33mChoose the screening\n\e[0m"
+printf "\e[33mRequest:\e[0m http://localhost:8080/screenings/5\n"
+printf "\e[33mResponse:\e[0m "
+curl "http://localhost:8080/screenings/5"
+printf "\n"

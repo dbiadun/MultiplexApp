@@ -1,5 +1,6 @@
 package dbiadun.MultiplexApp.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import dbiadun.MultiplexApp.TicketType;
 
 import javax.persistence.*;
@@ -10,7 +11,11 @@ import javax.validation.constraints.NotNull;
 public class Ticket {
     @Id
     @GeneratedValue
-    private int Id;
+    private int id;
+
+    @ManyToOne
+    @JsonIgnore
+    private Screening screening;
 
     @NotNull
     private int seatRow;
@@ -36,11 +41,19 @@ public class Ticket {
     }
 
     public int getId() {
-        return Id;
+        return id;
     }
 
     public void setId(int id) {
-        Id = id;
+        this.id = id;
+    }
+
+    public Screening getScreening() {
+        return screening;
+    }
+
+    public void setScreening(Screening screening) {
+        this.screening = screening;
     }
 
     public int getSeatRow() {

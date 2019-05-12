@@ -1,9 +1,11 @@
 package dbiadun.MultiplexApp.controllers;
 
+import dbiadun.MultiplexApp.exceptions.ScreeningNotFoundException;
 import dbiadun.MultiplexApp.models.Screening;
 import dbiadun.MultiplexApp.repositories.ScreeningsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,9 +19,17 @@ public class ScreeningsController {
 
     // Get titles and screening times of movies available in chosen time interval
     @GetMapping("/screenings")
-    public List<Screening.ScreeningData> getAllScreenings(@RequestParam String startTime, @RequestParam String endTime) {
+    public List<Screening.ScreeningBasicData> getAllScreenings(@RequestParam String startTime, @RequestParam String endTime) {
         List<Screening> screenings = screeningsRepository.
                 findByTimeBetweenOrderByMovieTitleAscTimeAsc(LocalDateTime.parse(startTime), LocalDateTime.parse(endTime));
         return Screening.getScreeningDataList(screenings);
+    }
+
+    // Get information about a particular screening (screening room and available seats)
+    @GetMapping("/screenings/{id}")
+    public Screening.ScreeningReservationData getScreeningReservationData(@PathVariable int id)
+            throws ScreeningNotFoundException {
+        Screening screening = screeningsRepository.findById(id).orElseThrow(() -> new ScreeningNotFoundException(id));
+        return screening.getScreeningReservationData();
     }
 }

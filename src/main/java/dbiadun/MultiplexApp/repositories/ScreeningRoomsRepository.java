@@ -1,9 +1,9 @@
 package dbiadun.MultiplexApp.repositories;
 
-import dbiadun.MultiplexApp.models.Movie;
+import dbiadun.MultiplexApp.models.ScreeningRoom;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface MoviesRepository extends JpaRepository<Movie, Integer> {
+public interface ScreeningRoomsRepository extends JpaRepository<ScreeningRoom, Integer> {
 }
