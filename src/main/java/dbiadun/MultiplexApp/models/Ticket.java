@@ -23,8 +23,8 @@ public class Ticket {
     @NotNull
     private int seatColumn;
 
-    @NotNull
     @ManyToOne
+    @JsonIgnore
     private Reservation reservation;
 
     @NotNull
@@ -33,7 +33,8 @@ public class Ticket {
     public Ticket() {
     }
 
-    public Ticket(int seatRow, int seatColumn, Reservation reservation, TicketType ticketType) {
+    public Ticket(Screening screening, int seatRow, int seatColumn, Reservation reservation, TicketType ticketType) {
+        this.screening = screening;
         this.seatRow = seatRow;
         this.seatColumn = seatColumn;
         this.reservation = reservation;

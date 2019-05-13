@@ -1,13 +1,13 @@
 package dbiadun.MultiplexApp.models;
 
+import dbiadun.MultiplexApp.helpers.ScreeningBasicData;
+import dbiadun.MultiplexApp.helpers.ScreeningReservationData;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.lang.reflect.Array;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "Screenings")
@@ -24,7 +24,7 @@ public class Screening {
     @ManyToOne
     private Movie movie;
 
-    @OneToMany(mappedBy = "screening")
+    @OneToMany(mappedBy = "screening", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("seatRow, seatColumn")
     private List<Ticket> tickets = new ArrayList<>();
 
@@ -92,45 +92,6 @@ public class Screening {
         ticket.setScreening(null);
     }
 
-    // Class used to give information about titles and screening times
-    public static class ScreeningBasicData {
-        private int screeningId;
-
-        private String title;
-
-        private LocalDateTime time;
-
-        public ScreeningBasicData(int screeningId, String title, LocalDateTime time) {
-            this.screeningId = screeningId;
-            this.title = title;
-            this.time = time;
-        }
-
-        public int getScreeningId() {
-            return screeningId;
-        }
-
-        public void setScreeningId(int screeningId) {
-            this.screeningId = screeningId;
-        }
-
-        public String getTitle() {
-            return title;
-        }
-
-        public void setTitle(String title) {
-            this.title = title;
-        }
-
-        public LocalDateTime getTime() {
-            return time;
-        }
-
-        public void setTime(LocalDateTime time) {
-            this.time = time;
-        }
-    }
-
     private ScreeningBasicData getScreeningData() {
         return new ScreeningBasicData(id, movie.getTitle(), time);
     }
@@ -142,50 +103,6 @@ public class Screening {
             ret.add(s.getScreeningData());
         }
         return ret;
-    }
-
-    public static class ScreeningReservationData {
-        private int screeningId;
-
-        private int screeningRoomNumber;
-
-        List<List<Integer>> availableSeats = new ArrayList<>();
-
-        public ScreeningReservationData(int screeningId, int screeningRoomNumber) {
-            this.screeningId = screeningId;
-            this.screeningRoomNumber = screeningRoomNumber;
-        }
-
-        public int getScreeningId() {
-            return screeningId;
-        }
-
-        public void setScreeningId(int screeningId) {
-            this.screeningId = screeningId;
-        }
-
-        public int getScreeningRoomNumber() {
-            return screeningRoomNumber;
-        }
-
-        public void setScreeningRoomNumber(int screeningRoomNumber) {
-            this.screeningRoomNumber = screeningRoomNumber;
-        }
-
-        public List<List<Integer>> getAvailableSeats() {
-            return availableSeats;
-        }
-
-        public void setAvailableSeats(List<List<Integer>> availableSeats) {
-            this.availableSeats = availableSeats;
-        }
-
-        public void addSeat(int row, int column) {
-            while (availableSeats.size() <= row) {
-                availableSeats.add(new ArrayList<>());
-            }
-            availableSeats.get(row).add(column);
-        }
     }
 
     public ScreeningReservationData getScreeningReservationData() {
